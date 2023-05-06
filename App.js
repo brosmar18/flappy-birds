@@ -8,13 +8,15 @@ export default function App() {
   const screenHeight = Dimensions.get("screen").height;
   const birdLeft = screenWidth / 2;
   const [birdBottom, setBirdBottom] = useState(screenHeight / 2);
-  const [obstaclesLeft, setObstaclesLeft] = useState(screenWidth);
+  const [obstaclesLeft, setObstaclesLeft] = useState(screenWidth + screenWidth/2 + 30);
+  const [obstaclesLeftTwo, setObstaclesLeftTwo] = useState(screenWidth);
   const obstacleWidth = 60;
   const obstacleHeight = 300;
-  const gap = 50;
+  const gap = 200;
   const gravity = 3;
   let gameTimerId;
   let obstaclesLeftTimerID;
+  let obstaclesLeftTimerIDTwo;
 
   //start bird falling
   useEffect(() => {
@@ -33,16 +35,38 @@ export default function App() {
 
   // start first obstacles
   useEffect(() => {
-    if (obstaclesLeft > 0) {
+    if (obstaclesLeft > -obstacleWidth) {
       obstaclesLeftTimerID = setInterval(() => {
         setObstaclesLeft(obstaclesLeft => obstaclesLeft - 5);
       }, 30)
+      return () => {
+        clearInterval(obstaclesLeftTimerID)
+      }
+    } else {
+      setObstaclesLeft(screenWidth);
     }
 
-    return () => {
-      clearInterval(obstaclesLeftTimerID)
-    }
+
   }, [obstaclesLeft])
+
+
+// start second set of obstacles.
+  useEffect(() => {
+    if (obstaclesLeftTwo > -obstacleWidth) {
+      obstaclesLeftTimerIDTwo = setInterval(() => {
+        setObstaclesLeftTwo(obstaclesLeftTwo => obstaclesLeftTwo - 5);
+      }, 30)
+      return () => {
+        clearInterval(obstaclesLeftTimerIDTwo)
+      }
+    } else {
+      setObstaclesLeftTwo(screenWidth);
+    }
+
+
+  }, [obstaclesLeftTwo])
+
+
 
   return (
     <>
@@ -52,10 +76,18 @@ export default function App() {
           birdBottom={birdBottom}
           birdLeft={birdLeft} />
         <Obstacles
+        color={'green'}
           obstacleWidth={obstacleWidth}
           obstacleHeight={obstacleHeight}
           gap={gap}
           obstaclesLeft={obstaclesLeft}
+        />
+        <Obstacles
+          color={'red'}
+          obstacleWidth={obstacleWidth}
+          obstacleHeight={obstacleHeight}
+          gap={gap}
+          obstaclesLeft={obstaclesLeftTwo}
         />
       </View>
 
