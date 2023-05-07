@@ -105,14 +105,18 @@ export default function App() {
   }
 
 
+  // ... (rest of the imports and code)
+
   return (
     <TouchableWithoutFeedback onPress={jump}>
       <View style={styles.container}>
-        {isGameOver && <Text style={{ fontSize: '30px' }}>{score}</Text>}
-        <Bird
-          birdBottom={birdBottom}
-          birdLeft={birdLeft}
-        />
+        {isGameOver && (
+          <View style={styles.gameOverContainer}>
+            <Text style={styles.gameOverText}>Game Over</Text>
+            <Text style={styles.scoreText}>{score}</Text>
+          </View>
+        )}
+        <Bird birdBottom={birdBottom} birdLeft={birdLeft} />
         <Obstacles
           color={'green'}
           obstacleWidth={obstacleWidth}
@@ -131,12 +135,30 @@ export default function App() {
         />
       </View>
     </TouchableWithoutFeedback>
-  )
-}
+  );
+
+} // Close the App function here
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gameOverContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+  },
+  gameOverText: {
+    fontSize: 48,
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  scoreText: {
+    fontSize: 30,
+    color: 'white',
+    textAlign: 'center',
   },
 })
